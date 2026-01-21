@@ -1,0 +1,159 @@
+body {
+    margin: 0;
+    font-family: 'Open Sans',"Lucida Grande","Lucida Sans Unicode",Arial,Helvetica,Verdana,sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-text-size-adjust: 100%;
+}
+
+strong {
+    font-weight: 700;
+}
+
+code, kbd, pre, samp {
+    font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+}
+
+code {
+    padding: 3px 5px;
+    font-size: 0.95em;
+    color: #c7254e;
+    background-color: #f9f2f4;
+    border-radius: 4px;
+}
+
+pre {
+    display: block;
+    margin: 0;
+    line-height: 1.5;
+    word-break: break-word;
+    word-wrap: break-word;
+    color: #333;
+    background-color: #f5f5f5;
+    border-radius: 6px;
+    overflow: auto;
+    padding: 8px;
+    border: 1px solid #eee;
+    max-height: none;
+    font-size: 0.9em;
+}
+
+.page_wrap {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.page_wrap a {
+    color: #168acd;
+    text-decoration: none;
+}
+
+.page_header {
+    position: fixed;
+    z-index: 10;
+    background-color: #ffffff;
+    width: 100%;
+    border-bottom: 1px solid #e3e6e8;
+}
+
+.page_header .content {
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 12px;
+    box-sizing: border-box;
+}
+
+.page_header .content .text {
+    padding: 20px 0;
+    font-size: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.page_body {
+    padding-top: 64px;
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+    padding-left: 12px;
+    padding-right: 12px;
+    box-sizing: border-box;
+}
+
+.history {
+    padding: 12px 0;
+}
+
+.message {
+    margin-bottom: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.default {
+    padding: 12px 14px;
+}
+
+.default .from_name {
+    color: #3892db;
+    font-weight: 600;
+    font-size: 14px;
+    padding-bottom: 6px;
+}
+
+.default .body {
+    margin-left: 56px;
+}
+
+.default .text {
+    font-size: 15px;
+    line-height: 1.6;
+    word-wrap: break-word;
+    unicode-bidi: plaintext;
+}
+
+.message .userpic .initials {
+    font-size: 18px;
+}
+
+.service {
+    padding: 12px 24px;
+}
+
+.pagination {
+    text-align: center;
+    padding: 20px;
+    font-size: 16px;
+}
+
+@media (max-width: 600px) {
+    body {
+        font-size: 16px;
+        line-height: 1.65;
+    }
+
+    .page_header .content .text {
+        font-size: 18px;
+    }
+
+    .default .text {
+        font-size: 16px;
+    }
+
+    .default .from_name {
+        font-size: 15px;
+    }
+
+    .default {
+        padding: 14px 16px;
+    }
+
+    .default .body {
+        margin-left: 52px;
+    }
+
+    .message {
+        margin-bottom: 10px;
+    }
+}
