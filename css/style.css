@@ -581,59 +581,81 @@ div.toast_shown {
 }
 .bot_button_column_separator {
     width: 2px
-}\n\n
-/* ===== ONLY FIX mobile right-side white strip (no other design changes) =====
-   Targets the exact cause: fixed 480px widths causing gaps on phones <480px wide.
-   Uses the strongest !important overrides to beat original template rules.
+}
+
+/* ===== Mobile-friendly, distinguishable chat bubbles + mobile width fix (added) =====
+   Notes:
+   - Distinguish M vs SI using existing avatar classes: userpic2 (M), userpic6 (SI).
+   - Fix right-side whitespace by overriding fixed 480px containers on mobile.
 */
 
-@media only screen and (max-width: 500px) {
-  * {
-    box-sizing: border-box !important;
-  }
+/* Background + overall text */
+.page_wrap {
+  background: #eef2f7;
+  color: #111827;
+}
 
-  html {
-    overflow-x: hidden !important;
+/* Bubble styling */
+.message.default .body {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 10px 12px;
+  box-shadow: 0 4px 12px rgba(17,24,39,0.06);
+}
+
+.default .text { color: #111827; }
+
+/* M vs SI bubble colors (no :has() needed) */
+.message.default .userpic2 ~ .body {
+  background: #ecfdf5;      /* mint */
+  border-color: #a7f3d0;
+}
+
+.message.default .userpic6 ~ .body {
+  background: #fdf2f8;      /* pink */
+  border-color: #fbcfe8;
+}
+
+.message.default .userpic2 ~ .body .from_name { color: #047857; }
+.message.default .userpic6 ~ .body .from_name { color: #9d174d; }
+
+/* Timestamps subtle (left, small, low contrast) */
+.pull_right.date.details {
+  float: left;
+  font-size: 10px;
+  color: rgba(17,24,39,0.35);
+  margin: 0 10px 6px 0;
+}
+
+/* Mobile: remove right-side whitespace and improve readability */
+@media (max-width: 600px) {
+  html, body {
+    width: 100%;
+    overflow-x: hidden;
+    background: #eef2f7;
   }
 
   body {
-    width: 100vw !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow-x: hidden !important;
-  }
-
-  .page_wrap {
-    width: 100vw !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  .page_header {
-    width: 100vw !important;
-    left: 0 !important;
-    right: 0 !important;
+    font-size: 16px;
+    line-height: 1.6;
   }
 
   .page_header .content,
   .page_body {
-    width: 100vw !important;
-    max-width: 100vw !important;
+    width: 100% !important;
+    max-width: 100% !important;
     margin: 0 !important;
-    padding-left: 12px !important;
-    padding-right: 12px !important;
   }
 
   .page_body {
-    padding-top: 64px !important;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-sizing: border-box;
   }
 
-  .message {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-
-  img {
-    max-width: 100vw !important;
+  .default .text {
+    font-size: 16px;
+    line-height: 1.7;
   }
 }
