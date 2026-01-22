@@ -583,19 +583,21 @@ div.toast_shown {
     width: 2px
 }
 
-/* ===== Mobile-friendly, distinguishable chat bubbles + mobile width fix (added) =====
-   Notes:
-   - Distinguish M vs SI using existing avatar classes: userpic2 (M), userpic6 (SI).
-   - Fix right-side whitespace by overriding fixed 480px containers on mobile.
-*/
+/* ===== Mobile-friendly, distinguishable chat bubbles (added) =====
+   Goal: visible changes on mobile without relying on :has(), and clear M vs SI blocks.
+   Uses the avatar color classes already present in HTML: userpic2 (M), userpic6 (SI). */
 
-/* Background + overall text */
+/* 1) Background + overall readability */
 .page_wrap {
   background: #eef2f7;
   color: #111827;
 }
 
-/* Bubble styling */
+.page_body {
+  background: transparent;
+}
+
+/* 2) Bubble styling applied to message body only (keeps icons/media intact) */
 .message.default .body {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -604,9 +606,13 @@ div.toast_shown {
   box-shadow: 0 4px 12px rgba(17,24,39,0.06);
 }
 
-.default .text { color: #111827; }
+.default .text {
+  color: #111827;
+}
 
-/* M vs SI bubble colors (no :has() needed) */
+/* 3) Make M vs SI distinguishable using the userpic color classes.
+   This does NOT require :has(). It relies on the message having .userpicwrap as first child.
+   We target the .body sibling that follows .userpicwrap. */
 .message.default .userpic2 ~ .body {
   background: #ecfdf5;      /* mint */
   border-color: #a7f3d0;
@@ -617,10 +623,11 @@ div.toast_shown {
   border-color: #fbcfe8;
 }
 
+/* Optional: tint the sender name to match */
 .message.default .userpic2 ~ .body .from_name { color: #047857; }
 .message.default .userpic6 ~ .body .from_name { color: #9d174d; }
 
-/* Timestamps subtle (left, small, low contrast) */
+/* 4) De-emphasize timestamps (left, subtle, small) */
 .pull_right.date.details {
   float: left;
   font-size: 10px;
@@ -628,14 +635,8 @@ div.toast_shown {
   margin: 0 10px 6px 0;
 }
 
-/* Mobile: remove right-side whitespace and improve readability */
+/* 5) Mobile: make the fixed 480px layout responsive so changes are visible */
 @media (max-width: 600px) {
-  html, body {
-    width: 100%;
-    overflow-x: hidden;
-    background: #eef2f7;
-  }
-
   body {
     font-size: 16px;
     line-height: 1.6;
@@ -643,15 +644,19 @@ div.toast_shown {
 
   .page_header .content,
   .page_body {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
+    width: 100%;
+    margin: 0;
   }
 
   .page_body {
     padding-left: 10px;
     padding-right: 10px;
     box-sizing: border-box;
+  }
+
+  .message {
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .default .text {
