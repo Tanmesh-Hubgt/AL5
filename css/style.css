@@ -583,20 +583,105 @@ div.toast_shown {
     width: 2px
 }
 
-/* Mobile readability only: no layout/icon/timestamp/icon changes */
+/* ===== Attractive chat theme (added) ===== */
+:root {
+  --chat-bg: #0b1220;
+  --panel-bg: rgba(255,255,255,0.06);
+  --text: #e8eefc;
+  --muted: rgba(232,238,252,0.55);
+
+  --m-bg: rgba(100,191,71,0.18);   /* userpic2 (M) is green */
+  --si-bg: rgba(230,113,165,0.18); /* userpic6 (SI) is pink */
+
+  --bubble-border: rgba(255,255,255,0.10);
+}
+
+/* Background + default text */
+.page_wrap {
+  background: radial-gradient(1200px 800px at 20% 0%, rgba(79,156,217,0.25), transparent 60%),
+              radial-gradient(900px 700px at 90% 10%, rgba(152,132,232,0.22), transparent 55%),
+              var(--chat-bg);
+  color: var(--text);
+}
+
+.page_header {
+  background-color: rgba(11,18,32,0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.page_header .content .text {
+  color: var(--text);
+}
+
+.details {
+  color: var(--muted);
+}
+
+/* Slightly nicer message container */
+.message {
+  margin: 8px -10px;
+}
+
+.default {
+  border-radius: 14px;
+}
+
+/* Bubble look (applies to any message body) */
+.message.default .body {
+  background: var(--panel-bg);
+  border: 1px solid var(--bubble-border);
+  border-radius: 14px;
+  padding: 10px 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.20);
+}
+
+/* Keep the name visible but a bit smaller */
+.default .from_name {
+  font-size: 13px;
+  letter-spacing: 0.2px;
+  margin-bottom: 6px;
+}
+
+/* Message text */
+.default .text {
+  color: var(--text);
+}
+
+/* === Distinguish users by userpic color class ===
+   In exported HTML, M is commonly userpic2 and SI is userpic6. */
+.message.default:has(.userpic2) .body {
+  background: linear-gradient(180deg, var(--m-bg), var(--panel-bg));
+  border-color: rgba(100,191,71,0.22);
+}
+
+.message.default:has(.userpic6) .body {
+  background: linear-gradient(180deg, var(--si-bg), var(--panel-bg));
+  border-color: rgba(230,113,165,0.22);
+}
+
+/* Also tint the name to match */
+.message.default:has(.userpic2) .from_name { color: #9be38a; }
+.message.default:has(.userpic6) .from_name { color: #ffb2d3; }
+
+/* === Make timestamps subtle (top-left, small, low contrast) ===
+   HTML uses: <div class="pull_right date details"> ... */
+.pull_right.date.details {
+  float: left;
+  font-size: 11px;
+  color: rgba(232,238,252,0.35);
+  margin: 0 10px 6px 0;
+}
+
+/* Service messages (date separators) */
+.message.service .body.details {
+  color: rgba(232,238,252,0.55);
+}
+
+/* Mobile readability remains (safe) */
 @media (max-width: 600px) {
-  body {
-    font-size: 16px;
-    line-height: 1.6;
-  }
-
-  .default .text {
-    font-size: 16px;
-    line-height: 1.7; /* overrides current line-height: 150% */
-  }
-
-  .date.details,
-  .details {
-    font-size: 12px;
-  }
+  body { font-size: 16px; line-height: 1.6; }
+  .default .text { font-size: 16px; line-height: 1.7; }
+  .pull_right.date.details { font-size: 10px; }
 }
