@@ -583,84 +583,105 @@ div.toast_shown {
     width: 2px
 }
 
-/* ===== Mobile-friendly, distinguishable chat bubbles (added) =====
-   Goal: visible changes on mobile without relying on :has(), and clear M vs SI blocks.
-   Uses the avatar color classes already present in HTML: userpic2 (M), userpic6 (SI). */
+/* ===== Attractive chat theme (added) ===== */
+:root {
+  --chat-bg: #0b1220;
+  --panel-bg: rgba(255,255,255,0.06);
+  --text: #e8eefc;
+  --muted: rgba(232,238,252,0.55);
 
-/* 1) Background + overall readability */
+  --m-bg: rgba(100,191,71,0.18);   /* userpic2 (M) is green */
+  --si-bg: rgba(230,113,165,0.18); /* userpic6 (SI) is pink */
+
+  --bubble-border: rgba(255,255,255,0.10);
+}
+
+/* Background + default text */
 .page_wrap {
-  background: #eef2f7;
-  color: #111827;
+  background: radial-gradient(1200px 800px at 20% 0%, rgba(79,156,217,0.25), transparent 60%),
+              radial-gradient(900px 700px at 90% 10%, rgba(152,132,232,0.22), transparent 55%),
+              var(--chat-bg);
+  color: var(--text);
 }
 
-.page_body {
-  background: transparent;
+.page_header {
+  background-color: rgba(11,18,32,0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
-/* 2) Bubble styling applied to message body only (keeps icons/media intact) */
+.page_header .content .text {
+  color: var(--text);
+}
+
+.details {
+  color: var(--muted);
+}
+
+/* Slightly nicer message container */
+.message {
+  margin: 8px -10px;
+}
+
+.default {
+  border-radius: 14px;
+}
+
+/* Bubble look (applies to any message body) */
 .message.default .body {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
+  background: var(--panel-bg);
+  border: 1px solid var(--bubble-border);
   border-radius: 14px;
   padding: 10px 12px;
-  box-shadow: 0 4px 12px rgba(17,24,39,0.06);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.20);
 }
 
+/* Keep the name visible but a bit smaller */
+.default .from_name {
+  font-size: 13px;
+  letter-spacing: 0.2px;
+  margin-bottom: 6px;
+}
+
+/* Message text */
 .default .text {
-  color: #111827;
+  color: var(--text);
 }
 
-/* 3) Make M vs SI distinguishable using the userpic color classes.
-   This does NOT require :has(). It relies on the message having .userpicwrap as first child.
-   We target the .body sibling that follows .userpicwrap. */
-.message.default .userpic2 ~ .body {
-  background: #ecfdf5;      /* mint */
-  border-color: #a7f3d0;
+/* === Distinguish users by userpic color class ===
+   In exported HTML, M is commonly userpic2 and SI is userpic6. */
+.message.default:has(.userpic2) .body {
+  background: linear-gradient(180deg, var(--m-bg), var(--panel-bg));
+  border-color: rgba(100,191,71,0.22);
 }
 
-.message.default .userpic6 ~ .body {
-  background: #fdf2f8;      /* pink */
-  border-color: #fbcfe8;
+.message.default:has(.userpic6) .body {
+  background: linear-gradient(180deg, var(--si-bg), var(--panel-bg));
+  border-color: rgba(230,113,165,0.22);
 }
 
-/* Optional: tint the sender name to match */
-.message.default .userpic2 ~ .body .from_name { color: #047857; }
-.message.default .userpic6 ~ .body .from_name { color: #9d174d; }
+/* Also tint the name to match */
+.message.default:has(.userpic2) .from_name { color: #9be38a; }
+.message.default:has(.userpic6) .from_name { color: #ffb2d3; }
 
-/* 4) De-emphasize timestamps (left, subtle, small) */
+/* === Make timestamps subtle (top-left, small, low contrast) ===
+   HTML uses: <div class="pull_right date details"> ... */
 .pull_right.date.details {
   float: left;
-  font-size: 10px;
-  color: rgba(17,24,39,0.35);
+  font-size: 11px;
+  color: rgba(232,238,252,0.35);
   margin: 0 10px 6px 0;
 }
 
-/* 5) Mobile: make the fixed 480px layout responsive so changes are visible */
+/* Service messages (date separators) */
+.message.service .body.details {
+  color: rgba(232,238,252,0.55);
+}
+
+/* Mobile readability remains (safe) */
 @media (max-width: 600px) {
-  body {
-    font-size: 16px;
-    line-height: 1.6;
-  }
-
-  .page_header .content,
-  .page_body {
-    width: 100%;
-    margin: 0;
-  }
-
-  .page_body {
-    padding-left: 10px;
-    padding-right: 10px;
-    box-sizing: border-box;
-  }
-
-  .message {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .default .text {
-    font-size: 16px;
-    line-height: 1.7;
-  }
+  body { font-size: 16px; line-height: 1.6; }
+  .default .text { font-size: 16px; line-height: 1.7; }
+  .pull_right.date.details { font-size: 10px; }
 }
