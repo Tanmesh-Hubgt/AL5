@@ -686,51 +686,62 @@ div.toast_shown {
   .pull_right.date.details { font-size: 10px; }
 }
 
-/* ===== Media emphasis (added) =====
-   Make images/videos a bit larger and more attention-grabbing where possible
-   without breaking the layout.
+/* ===== Extra mobile overflow hardening (added) =====
+   If a tiny white strip still appears, something is still exceeding the viewport.
+   These rules clamp the most common offenders.
 */
 
-/* Give media blocks more breathing room */
-.message.default .media_wrap {
-  margin-top: 8px;
+html, body {
+  overflow-x: hidden;
+  position: relative;
 }
 
-/* Make photo/video thumbnails expand to the bubble width */
-.message.default .photo,
-.message.default .video_file,
-.message.default .video_file_wrap,
-.message.default .video_file_wrap img,
-.message.default .photo_wrap img,
-.message.default img.photo,
-.message.default img.video_file {
-  display: block;
-  width: 100% !important;
-  max-width: 100% !important;
-  height: auto !important;
-}
-
-/* Ensure the clickable wrapper doesn’t constrain width */
-.message.default a.photo_wrap,
-.message.default a.video_file_wrap {
-  display: block;
+/* Avoid "100vw" style overflows on mobile browsers with scrollbars */
+.page_wrap,
+.page_header {
   width: 100%;
+  max-width: 100%;
 }
 
-/* Slight “pop” effect (subtle) */
-.message.default img.photo,
-.message.default img.video_file,
-.message.default img.sticker {
-  border-radius: 12px;
-  box-shadow: 0 10px 26px rgba(0,0,0,0.28);
+/* Clamp any element that accidentally becomes wider than the viewport */
+* {
+  max-width: 100%;
 }
 
-/* On larger screens, cap media so it doesn't look comically huge */
-@media (min-width: 601px) {
-  .message.default img.photo,
-  .message.default img.video_file,
-  .message.default img.sticker {
-    max-width: 420px !important;
+/* Long unbroken text/URLs can force overflow */
+.default .text,
+.page_header .content .text {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+@media (max-width: 600px) {
+  /* Ensure nothing uses a fixed pixel width container on mobile */
+  .page_header .content,
+  .page_body,
+  .history {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box;
+  }
+
+  /* Make message bodies and media respect the container width */
+  .message,
+  .default,
+  .default .body,
+  .default .media_wrap,
+  .default .media {
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  /* Some wrappers are floated; ensure they don't exceed width */
+  a.photo_wrap,
+  a.video_file_wrap,
+  a.sticker_wrap {
+    max-width: 100% !important;
   }
 }
 
